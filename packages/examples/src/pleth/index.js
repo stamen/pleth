@@ -3,12 +3,13 @@ import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
 import { PlethBody } from './PlethBody';
 import { PolygonsLayer } from './PolygonsLayer';
+import { PolygonLabelsLayer } from './PolygonLabelsLayer';
 
 const Pleth = () => {
   const ref = useRef();
   const dimensions = useResizeObserver(ref);
 
-  const layers = [PolygonsLayer];
+  const layers = [PolygonsLayer, PolygonLabelsLayer];
 
   return (
     <Wrapper ref={ref}>
