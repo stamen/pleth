@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   position: relative;
 `;
 
-export const Layer = styled.div`
+export const LayerWrapper = styled.div`
   position: absolute;
   left: 0;
   top: 0;
