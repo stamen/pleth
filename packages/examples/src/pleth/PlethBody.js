@@ -1,7 +1,12 @@
 import React from 'react';
 import { LayerWrapper } from './styles';
 
-export const PlethBody = ({ width, height, layers }) => {
+export const PlethBody = ({
+  width,
+  height,
+  layers,
+  geometriesForActiveRegion,
+}) => {
   const layerNamesSeen = {};
   return layers.map((Layer) => {
     if (!Layer.name) {
@@ -21,7 +26,11 @@ export const PlethBody = ({ width, height, layers }) => {
     }
     return (
       <LayerWrapper key={Layer.name}>
-        <Layer width={width} height={height} />
+        <Layer
+          width={width}
+          height={height}
+          geometriesForActiveRegion={geometriesForActiveRegion}
+        />
       </LayerWrapper>
     );
   });

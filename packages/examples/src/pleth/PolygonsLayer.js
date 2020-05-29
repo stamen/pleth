@@ -7,6 +7,7 @@ const defaultScaleFactor = 2;
 export const PolygonsLayer = ({
   width,
   height,
+  geometriesForActiveRegion,
   scaleFactor = defaultScaleFactor,
 }) => {
   const ref = useRef();
@@ -15,11 +16,8 @@ export const PolygonsLayer = ({
 
   useEffect(() => {
     const ctx = ref.current.getContext('2d');
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(width, height);
-    ctx.stroke();
-  }, [width, height]);
+    console.log(geometriesForActiveRegion);
+  }, [width, height, geometriesForActiveRegion]);
 
   return (
     <canvas
