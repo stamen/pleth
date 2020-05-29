@@ -23,8 +23,6 @@ export const useCache = () => {
   // After the data is loaded, the value is the parsed JSON response.
   const [cache, dispatch] = useReducer(reducer, {});
 
-  //console.log(cache);
-
   // This function requests data for a specific region ID.
   //
   // Accepts a cacheKey string and a "onCacheMiss" function.
@@ -37,26 +35,8 @@ export const useCache = () => {
   const get = useCallback(
     ({ cacheKey, onCacheMiss }) => {
       const cached = cache[cacheKey];
-
-      // If this request is already pending, do nothing.
-      if (cached === 'pending') {
-        //console.log('cache pending on ' + cacheKey);
-        return null;
-      }
-
-      // Return the cached value if available.
-      if (cached) {
-        //console.log('cache hit on ' + cacheKey);
-        return cached;
-      }
-
-      // At this point, we need to initiate a fetch for the data.
-
-      // First, mark this request as being en route.
+      if (cached) return cached === 'pending' ? null : cached;
       dispatch({ type: 'request', cacheKey });
-
-      // Then, kick off an async fetch.
-      //console.log('cache miss on ' + cacheKey);
       onCacheMiss().then((response) => {
         dispatch({ type: 'receive', cacheKey, response });
       });
