@@ -1,4 +1,7 @@
 import React, { useRef, useEffect } from 'react';
+import { geoAlbersUsa, geoPath } from 'd3-geo';
+
+const projection = geoAlbersUsa(); //.scale(1300).translate([487.5, 305])
 
 // For HiDPI Canvas rendering.
 // Makes it look still crisp even after browser zoom in.
@@ -15,7 +18,11 @@ export const PolygonsLayer = ({
   height *= scaleFactor;
 
   useEffect(() => {
-    const ctx = ref.current.getContext('2d');
+    const context = ref.current.getContext('2d');
+    const path = geoPath(projection, context);
+    context.beginPath();
+    path(geometriesForActiveRegion);
+    context.stroke();
     console.log(geometriesForActiveRegion);
   }, [width, height, geometriesForActiveRegion]);
 
