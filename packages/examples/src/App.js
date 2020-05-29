@@ -1,4 +1,5 @@
 import React from 'react';
+import { feature } from 'topojson';
 import Pleth, { PolygonsLayer, PolygonLabelsLayer } from './pleth';
 import './App.css';
 
@@ -12,14 +13,22 @@ const geometryURLFromId = (id) => {
   throw new Error('Unknown ID provided: ' + id);
 };
 
-const USStatesDataProvider = {
-  isSupportedId: (id) => id === 'USA',
-  fetchGeometriesForID: (id) => json(geometryURLFromId(id)),
+const topoFeature = async (promise) => {
+  //const data = await promise;
+  //console.log(data);
+  //return feature((data).objects.states);
+  return 'foo';
 };
 
+const USStatesDataProvider = {
+  isSupportedId: (id) => id === 'USA',
+  fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
+};
+
+const layers = [PolygonsLayer, PolygonLabelsLayer];
+const dataProviders = [USStatesDataProvider];
+
 const App = () => {
-  const layers = [PolygonsLayer, PolygonLabelsLayer];
-  const dataProviders = [USStatesDataProvider];
   return (
     <div className="App">
       <Pleth layers={layers} dataProviders={dataProviders} activeId="USA" />

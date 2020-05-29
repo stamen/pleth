@@ -23,6 +23,8 @@ export const useCache = () => {
   // After the data is loaded, the value is the parsed JSON response.
   const [cache, dispatch] = useReducer(reducer, {});
 
+  //console.log(cache);
+
   // This function requests data for a specific region ID.
   //
   // Accepts a cacheKey string and a "onCacheMiss" function.
