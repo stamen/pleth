@@ -1,13 +1,14 @@
 import React from 'react';
-import Pleth from './pleth';
+import Pleth, { PolygonsLayer, PolygonLabelsLayer } from './pleth';
 import './App.css';
 
-function App() {
+const App = () => {
+  const layers = [PolygonsLayer, PolygonLabelsLayer];
   return (
     <div className="App">
-      <Pleth />
+      <Pleth layers={layers} />
     </div>
   );
-}
+};
 
 export default App;
