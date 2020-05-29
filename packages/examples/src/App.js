@@ -14,10 +14,8 @@ const geometryURLFromId = (id) => {
 };
 
 const topoFeature = async (promise) => {
-  //const data = await promise;
-  //console.log(data);
-  //return feature((data).objects.states);
-  return 'foo';
+  const data = await promise;
+  return feature(data, data.objects.states);
 };
 
 const USStatesDataProvider = {

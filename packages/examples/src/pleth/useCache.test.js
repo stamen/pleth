@@ -34,8 +34,7 @@ test('Only fetches once.', async () => {
   const Component = () => {
     renderCount++;
     const { get } = useCache();
-    const [someState, setSomeState] = useState();
-    setState = setSomeState;
+    setState = useState()[1];
     data = get({
       cacheKey: 'data',
       onCacheMiss: async () => {
