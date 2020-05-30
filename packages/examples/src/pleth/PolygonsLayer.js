@@ -18,12 +18,12 @@ export const PolygonsLayer = ({
   height *= scaleFactor;
 
   useEffect(() => {
+    if (!geometriesForActiveRegion) return;
     const context = ref.current.getContext('2d');
     const path = geoPath(projection, context);
     context.beginPath();
     path(geometriesForActiveRegion);
     context.stroke();
-    console.log(geometriesForActiveRegion);
   }, [width, height, geometriesForActiveRegion]);
 
   return (
