@@ -1,12 +1,13 @@
 import React from 'react';
 import polylabel from 'polylabel';
-import { max } from 'd3-array';
+//import { max } from 'd3-array';
 
 export const PolygonLabelsLayer = ({
   width,
   height,
   geometries,
   projection,
+  path,
 }) => {
   // Wait for geometries to load.
   if (!geometries) return null;
@@ -16,27 +17,30 @@ export const PolygonLabelsLayer = ({
   const labels = [];
   geometries.features.forEach((feature) => {
     if (feature.geometry.type === 'Polygon') {
-      console.log(feature.geometry.coordinates);
       labels.push({
+        id: feature.id,
         name: feature.properties.name,
         coordinates: polylabel(feature.geometry.coordinates),
       });
     } else if (feature.geometry.type === 'MultiPolygon') {
-      //console.log(feature.geometry.coordinates);
+      // TODO make it work for MultiPolygons.
+      // Related: https://github.com/mapbox/polylabel/pull/61
+      //console.log(feature.geometry.coordinates.map(coordinatespath.area));
       //console.log(feature.geometry.coordinates, arr => arr.length
       //labels.push({
       //  name: feature.properties.name,
-      //  coordinates: polylabel(max(feature.geometry.coordinates, arr => arr.length))
+      //  coordinates: polylabel(max(feature.geometry.coordinates, path.area))
       //});
     }
   });
 
   return (
     <svg width={width} height={height}>
-      {labels.map(({ name, coordinates }) => {
+      {labels.map(({ id, name, coordinates }) => {
         const [x, y] = projection(coordinates);
         return (
           <text
+            key={id}
             x={x}
             y={y}
             textAnchor="middle"
