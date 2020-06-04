@@ -1,4 +1,5 @@
 import React, { useRef, useCallback } from 'react';
+import { geoAlbersUsa } from 'd3-geo';
 import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
 import { useCache } from './useCache';
@@ -14,6 +15,9 @@ const Pleth = ({ layers, dataProviders, activeId }) => {
       dataProviders.find((dataProvider) => dataProvider.isSupportedId(id)),
     [dataProviders]
   );
+
+  // TODO make this dynamic per region.
+  const projection = geoAlbersUsa();
 
   const geometriesForActiveRegion = get({
     cacheKey: 'geometries' + activeId,
@@ -36,6 +40,7 @@ const Pleth = ({ layers, dataProviders, activeId }) => {
           height={dimensions.height}
           layers={layers}
           geometriesForActiveRegion={geometriesForActiveRegion}
+          projection={projection}
         />
       ) : null}
     </Wrapper>

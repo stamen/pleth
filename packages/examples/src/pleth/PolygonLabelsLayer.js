@@ -6,8 +6,8 @@ export const PolygonLabelsLayer = ({ width, height }) => {
       <text
         x={width / 2}
         y={height / 2}
-        text-anchor="middle"
-        alignment-baseline="middle"
+        textAnchor="middle"
+        alignmentBaseline="middle"
       >
         Hello SVG text!
       </text>

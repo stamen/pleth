@@ -6,6 +6,7 @@ export const PlethBody = ({
   height,
   layers,
   geometriesForActiveRegion,
+  projection,
 }) => {
   const layerNamesSeen = {};
   return layers.map((Layer) => {
@@ -24,12 +25,18 @@ export const PlethBody = ({
     if (typeof Layer !== 'function') {
       throw new Error('Each layer entry must be a function.');
     }
+
+    // Adjust projection to the current width and height.
+    // Each layer may mutate these, so it's reset before rendering each layer.
+    projection.scale((width + height) / 2).translate([width / 2, height / 2]);
+
     return (
       <LayerWrapper key={Layer.name}>
         <Layer
           width={width}
           height={height}
           geometriesForActiveRegion={geometriesForActiveRegion}
+          projection={projection}
         />
       </LayerWrapper>
     );
