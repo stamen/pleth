@@ -1,5 +1,6 @@
 import React from 'react';
 import polylabel from 'polylabel';
+import { max } from 'd3-array';
 
 export const PolygonLabelsLayer = ({
   width,
@@ -15,12 +16,18 @@ export const PolygonLabelsLayer = ({
   const labels = [];
   geometries.features.forEach((feature) => {
     if (feature.geometry.type === 'Polygon') {
+      console.log(feature.geometry.coordinates);
       labels.push({
         name: feature.properties.name,
         coordinates: polylabel(feature.geometry.coordinates),
       });
     } else if (feature.geometry.type === 'MultiPolygon') {
-      console.log('TODO handle MultiPolygon');
+      //console.log(feature.geometry.coordinates);
+      //console.log(feature.geometry.coordinates, arr => arr.length
+      //labels.push({
+      //  name: feature.properties.name,
+      //  coordinates: polylabel(max(feature.geometry.coordinates, arr => arr.length))
+      //});
     }
   });
 
@@ -35,7 +42,11 @@ export const PolygonLabelsLayer = ({
             textAnchor="middle"
             alignmentBaseline="middle"
             // TODO use styled components
-            style={{ pointerEvents: 'none', userSelect: 'none', fontSize: '10px' }}
+            style={{
+              pointerEvents: 'none',
+              userSelect: 'none',
+              fontSize: '10px',
+            }}
           >
             {name}
           </text>

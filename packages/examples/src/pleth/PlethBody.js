@@ -7,6 +7,7 @@ export const PlethBody = ({
   layers,
   geometries,
   projection,
+  path,
 }) => {
   const layerNamesSeen = {};
   return layers.map((Layer) => {
@@ -37,6 +38,7 @@ export const PlethBody = ({
           height={height}
           geometries={geometries}
           projection={projection}
+          path={path}
         />
       </LayerWrapper>
     );
