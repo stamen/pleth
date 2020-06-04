@@ -5,7 +5,7 @@ export const PlethBody = ({
   width,
   height,
   layers,
-  geometriesForActiveRegion,
+  geometries,
   projection,
 }) => {
   const layerNamesSeen = {};
@@ -35,7 +35,7 @@ export const PlethBody = ({
         <Layer
           width={width}
           height={height}
-          geometriesForActiveRegion={geometriesForActiveRegion}
+          geometries={geometries}
           projection={projection}
         />
       </LayerWrapper>

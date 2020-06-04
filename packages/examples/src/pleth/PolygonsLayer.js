@@ -8,7 +8,7 @@ const defaultScaleFactor = 2;
 export const PolygonsLayer = ({
   width,
   height,
-  geometriesForActiveRegion,
+  geometries,
   scaleFactor = defaultScaleFactor,
   projection,
 }) => {
@@ -16,17 +16,29 @@ export const PolygonsLayer = ({
   width *= scaleFactor;
   height *= scaleFactor;
 
-  // Adjust the scale and translate for this layer's resolution.
-  projection.scale((width + height) / 2).translate([width / 2, height / 2]);
-
   useLayoutEffect(() => {
-    if (!geometriesForActiveRegion) return;
+    if (!geometries) return;
+
+    // Adjust the scale and translate for this layer's resolution.
+    const oldScale = projection.scale();
+    const oldTranslate = projection.translate();
+    projection
+      .scale(oldScale * scaleFactor)
+      .translate([
+        oldTranslate[0] * scaleFactor,
+        oldTranslate[1] * scaleFactor,
+      ]);
+
+    // Draw the shapes.
     const context = ref.current.getContext('2d');
     const path = geoPath(projection, context);
     context.beginPath();
-    path(geometriesForActiveRegion);
+    path(geometries);
     context.stroke();
-  }, [width, height, geometriesForActiveRegion, projection]);
+
+    // Restore the old scale and translate.
+    projection.scale(oldScale).translate(oldTranslate);
+  }, [width, height, geometries, projection, scaleFactor]);
 
   return (
     <canvas

@@ -7720,6 +7720,13 @@ pnp-webpack-plugin@1.6.4:
   dependencies:
     ts-pnp "^1.1.6"
 
+polylabel@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/polylabel/-/polylabel-1.0.5.tgz#ace41fc06b6d5c21030a5b58723a4bc701201ee8"
+  integrity sha512-vZLCpmdsnyBpHmGJSKMPovOe4PuhopX0k0sd+8qCdE/6h+Mf/GC93hMRHnithjuLwY5AwjKPD4w7Y/SNxn3Iuw==
+  dependencies:
+    tinyqueue "^2.0.3"
+
 portfinder@^1.0.25:
   version "1.0.25"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.25.tgz#254fd337ffba869f4b9d37edc298059cb4d35eca"
@@ -10101,6 +10108,11 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+
+tinyqueue@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/tinyqueue/-/tinyqueue-2.0.3.tgz#64d8492ebf39e7801d7bd34062e29b45b2035f08"
+  integrity sha512-ppJZNDuKGgxzkHihX8v9v9G5f+18gzaTfrukGrq6ueg0lmH4nqVnA2IPG0AEH3jKEk2GRJCUhDoqpoiw3PHLBA==
 
 tmp@^0.0.33:
   version "0.0.33"

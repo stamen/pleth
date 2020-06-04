@@ -19,7 +19,7 @@ const Pleth = ({ layers, dataProviders, activeId }) => {
   // TODO make this dynamic per region.
   const projection = geoAlbersUsa();
 
-  const geometriesForActiveRegion = get({
+  const geometries = get({
     cacheKey: 'geometries' + activeId,
     onCacheMiss: () => {
       const dataProvider = findDataProvider(activeId);
@@ -39,7 +39,7 @@ const Pleth = ({ layers, dataProviders, activeId }) => {
           width={dimensions.width}
           height={dimensions.height}
           layers={layers}
-          geometriesForActiveRegion={geometriesForActiveRegion}
+          geometries={geometries}
           projection={projection}
         />
       ) : null}
