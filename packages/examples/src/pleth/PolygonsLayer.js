@@ -44,16 +44,7 @@ export const PolygonsLayer = ({
 
       // Restore the old scale and translate.
       projection.scale(oldScale).translate(oldTranslate);
-    }, [
-      width,
-      height,
-      geometries,
-      projection,
-      scaleFactor,
-      path,
-      strokeStyle,
-      fillStyle,
-    ]);
+    }, [width, height, geometries, projection, path]);
 
     return (
       <canvas
