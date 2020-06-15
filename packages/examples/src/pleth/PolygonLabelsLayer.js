@@ -12,56 +12,31 @@ export const PolygonLabelsLayer = ({
   // Wait for geometries to load.
   if (!geometries) return null;
 
-  // TODO memoize this
-  // TODO move all this to preprocessing
   const labels = [];
   geometries.features.forEach((feature) => {
+    const id = feature.id;
+    const name = feature.properties.name;
     if (feature.geometry.type === 'Polygon') {
-      labels.push({
-        id: feature.id,
-        name: feature.properties.name,
-        coordinates: polylabel(feature.geometry.coordinates),
-      });
+      const coordinates = polylabel([
+        feature.geometry.coordinates[0].map(projection),
+      ]);
+      labels.push({ id, name, coordinates });
     } else if (feature.geometry.type === 'MultiPolygon') {
-      const polylabels = feature.geometry.coordinates.map((polygon) =>
-        polylabel(polygon)
-      );
-      const coordinates = polylabels[maxIndex(polylabels, (d) => d.distance)];
-
-      if (coordinates === null) {
-        console.log(feature.geometry.coordinates);
-        return;
+      const polylabels = feature.geometry.coordinates
+        .map((polygon) => polygon[0].map(projection))
+        .filter((projectedPolygon) => !projectedPolygon.some((d) => d === null))
+        .map((projectedPolygon) => polylabel([projectedPolygon]));
+      if (polylabels.length > 0) {
+        const coordinates = polylabels[maxIndex(polylabels, (d) => d.distance)];
+        labels.push({ id, name, coordinates });
       }
-
-      labels.push({
-        id: feature.id,
-        name: feature.properties.name,
-        coordinates,
-      });
-      //      console.log(polylabels);
-      //coordinates: polylabel(feature.geometry.coordinates),
-      // TODO make it work for MultiPolygons.
-      // Related: https://github.com/mapbox/polylabel/pull/61
-      //console.log(feature.geometry.coordinates.map(coordinatespath.area));
-      //console.log(feature.geometry.coordinates, arr => arr.length
-      //labels.push({
-      //  name: feature.properties.name,
-      //  coordinates: polylabel(max(feature.geometry.coordinates, path.area))
-      //});
     }
   });
 
   return (
     <svg width={width} height={height}>
       {labels.map(({ id, name, coordinates }) => {
-        console.log(coordinates);
-        const projectedCoordinates = projection(coordinates);
-        if (projectedCoordinates === null) {
-          return null;
-        }
-        console.log(projectedCoordinates);
-        console.log(name);
-        const [x, y] = projection(coordinates);
+        const [x, y] = coordinates;
         return (
           <Fragment key={id}>
             <circle cx={x} cy={y} r={2} />
