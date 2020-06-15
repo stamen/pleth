@@ -1,5 +1,6 @@
 import React from 'react';
 import { feature } from 'topojson';
+import { gray } from 'd3-color';
 import Pleth, { PolygonsLayer, PolygonLabelsLayer } from './pleth';
 import './App.css';
 
@@ -23,7 +24,10 @@ const USStatesDataProvider = {
   fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
 };
 
-const layers = [PolygonsLayer, PolygonLabelsLayer];
+const layers = [
+  PolygonsLayer({ fillStyle: gray(95), strokeStyle: gray(80) }),
+  PolygonLabelsLayer,
+];
 const dataProviders = [USStatesDataProvider];
 
 const App = () => {

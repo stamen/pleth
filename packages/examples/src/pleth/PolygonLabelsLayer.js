@@ -1,6 +1,22 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 import polylabel from '@datavis-tech/polylabel';
 import { maxIndex } from 'd3-array';
+
+const Text = styled.text`
+  pointer-events: none;
+  user-select: none;
+  font-size: 10px;
+  text-anchor: middle;
+  alignment-baseline: middle;
+  stroke-linejoin: round;
+`;
+
+const TextStroke = styled(Text)`
+  opacity: 0.8;
+  stroke: white;
+  stroke-width: 2px;
+`;
 
 export const PolygonLabelsLayer = ({
   width,
@@ -36,25 +52,11 @@ export const PolygonLabelsLayer = ({
   return (
     <svg width={width} height={height}>
       {labels.map(({ id, name, coordinates }) => {
-        const [x, y] = coordinates;
         return (
-          <Fragment key={id}>
-            <circle cx={x} cy={y} r={2} />
-            <text
-              x={x}
-              y={y}
-              textAnchor="middle"
-              alignmentBaseline="middle"
-              // TODO use styled components
-              style={{
-                pointerEvents: 'none',
-                userSelect: 'none',
-                fontSize: '10px',
-              }}
-            >
-              {name}
-            </text>
-          </Fragment>
+          <g key={id} transform={`translate(${coordinates})`}>
+            <TextStroke> {name} </TextStroke>
+            <Text> {name} </Text>
+          </g>
         );
       })}
     </svg>

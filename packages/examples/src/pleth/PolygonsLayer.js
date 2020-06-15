@@ -5,51 +5,67 @@ import React, { useRef, useLayoutEffect } from 'react';
 const defaultScaleFactor = 2;
 
 export const PolygonsLayer = ({
-  width,
-  height,
-  geometries,
+  fillStyle,
+  strokeStyle,
   scaleFactor = defaultScaleFactor,
-  projection,
-  path,
 }) => {
-  const ref = useRef();
-  width *= scaleFactor;
-  height *= scaleFactor;
+  const Component = ({ width, height, geometries, projection, path }) => {
+    const ref = useRef();
+    width *= scaleFactor;
+    height *= scaleFactor;
 
-  useLayoutEffect(() => {
-    if (!geometries) return;
+    useLayoutEffect(() => {
+      if (!geometries) return;
 
-    // Adjust the scale and translate for this layer's resolution.
-    const oldScale = projection.scale();
-    const oldTranslate = projection.translate();
-    projection
-      .scale(oldScale * scaleFactor)
-      .translate([
-        oldTranslate[0] * scaleFactor,
-        oldTranslate[1] * scaleFactor,
-      ]);
+      // Adjust the scale and translate for this layer's resolution.
+      const oldScale = projection.scale();
+      const oldTranslate = projection.translate();
+      projection
+        .scale(oldScale * scaleFactor)
+        .translate([
+          oldTranslate[0] * scaleFactor,
+          oldTranslate[1] * scaleFactor,
+        ]);
 
-    // Draw the shapes.
-    const context = ref.current.getContext('2d');
-    path.context(context);
-    context.beginPath();
-    path(geometries);
-    context.stroke();
-    path.context(null);
+      // Draw the shapes.
+      const context = ref.current.getContext('2d');
+      path.context(context);
+      context.beginPath();
+      path(geometries);
+      if (fillStyle) {
+        context.fillStyle = fillStyle;
+        context.fill();
+      }
+      if (strokeStyle) {
+        context.strokeStyle = strokeStyle;
+        context.stroke();
+      }
+      path.context(null);
 
-    // Restore the old scale and translate.
-    projection.scale(oldScale).translate(oldTranslate);
-  }, [width, height, geometries, projection, scaleFactor, path]);
+      // Restore the old scale and translate.
+      projection.scale(oldScale).translate(oldTranslate);
+    }, [
+      width,
+      height,
+      geometries,
+      projection,
+      scaleFactor,
+      path,
+      strokeStyle,
+      fillStyle,
+    ]);
 
-  return (
-    <canvas
-      ref={ref}
-      width={width}
-      height={height}
-      style={{
-        width: width / scaleFactor + 'px',
-        height: height / scaleFactor + 'px',
-      }}
-    />
-  );
+    return (
+      <canvas
+        ref={ref}
+        width={width}
+        height={height}
+        style={{
+          width: width / scaleFactor + 'px',
+          height: height / scaleFactor + 'px',
+        }}
+      />
+    );
+  };
+  return Component;
 };
