@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@datavis-tech/polylabel": "^1.2.0",
-    "@testing-library/jest-dom": "^5.9.0",
-    "@testing-library/react": "^10.2.0",
-    "@testing-library/user-event": "^11.2.0",
+    "@testing-library/jest-dom": "^5.10.1",
+    "@testing-library/react": "^10.2.1",
+    "@testing-library/user-event": "^11.4.2",
     "d3-array": "^2.4.0",
     "d3-color": "^1.4.1",
     "d3-fetch": "^1.2.0",
