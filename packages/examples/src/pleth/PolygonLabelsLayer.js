@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import polylabel from '@datavis-tech/polylabel';
+import polylabel from '../polylabel';
 import { maxIndex } from 'd3-array';
+
+const centroidWeight = 0.01;
+const precision = 1;
 
 const Text = styled.text`
   pointer-events: none;
@@ -33,15 +36,20 @@ export const PolygonLabelsLayer = ({
     const id = feature.id;
     const name = feature.properties.name;
     if (feature.geometry.type === 'Polygon') {
-      const coordinates = polylabel([
-        feature.geometry.coordinates[0].map(projection),
-      ]);
+      const coordinates = polylabel(
+        [feature.geometry.coordinates[0].map(projection)],
+        precision,
+        false,
+        centroidWeight
+      );
       labels.push({ id, name, coordinates });
     } else if (feature.geometry.type === 'MultiPolygon') {
       const polylabels = feature.geometry.coordinates
         .map((polygon) => polygon[0].map(projection))
         .filter((projectedPolygon) => !projectedPolygon.some((d) => d === null))
-        .map((projectedPolygon) => polylabel([projectedPolygon]));
+        .map((projectedPolygon) =>
+          polylabel([projectedPolygon], precision, false, centroidWeight)
+        );
       if (polylabels.length > 0) {
         const coordinates = polylabels[maxIndex(polylabels, (d) => d.distance)];
         labels.push({ id, name, coordinates });
