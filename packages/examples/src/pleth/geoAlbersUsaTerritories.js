@@ -1,5 +1,5 @@
 // From https://github.com/stamen/dirty-reprojectors/blob/master/projections/albers-usa-territories.js
-const d3 = require('d3-geo');
+import { geoAlbers, geoConicEqualArea } from 'd3-geo';
 
 const epsilon = 0.000001;
 
@@ -29,34 +29,29 @@ function multiplex(streams) {
 export function geoAlbersUsaTerritories() {
   var cache,
     cacheStream,
-    lower48 = d3.geoAlbers(),
+    lower48 = geoAlbers(),
     lower48Point,
-    alaska = d3
-      .geoConicEqualArea()
+    alaska = geoConicEqualArea()
       .rotate([154, 0])
       .center([-2, 58.5])
       .parallels([55, 65]),
     alaskaPoint,
-    hawaii = d3
-      .geoConicEqualArea()
+    hawaii = geoConicEqualArea()
       .rotate([157, 0])
       .center([-3, 19.9])
       .parallels([8, 18]),
     hawaiiPoint,
-    puertoRico = d3
-      .geoConicEqualArea()
+    puertoRico = geoConicEqualArea()
       .rotate([66, 0])
       .center([0, 18])
       .parallels([8, 18]),
     puertoRicoPoint,
-    guamMariana = d3
-      .geoConicEqualArea()
+    guamMariana = geoConicEqualArea()
       .rotate([-145, 0])
       .center([0, 16])
       .parallels([10, 20]),
     guamMarianaPoint,
-    americanSamoa = d3
-      .geoConicEqualArea()
+    americanSamoa = geoConicEqualArea()
       .rotate([170, 0])
       .center([0, -14])
       .parallels([-14, 0]),
