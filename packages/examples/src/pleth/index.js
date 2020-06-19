@@ -1,5 +1,6 @@
 import React, { useRef, useCallback } from 'react';
-import { geoAlbersUsa, geoPath } from 'd3-geo';
+import { geoPath } from 'd3-geo';
+import { geoAlbersUsaTerritories } from './geoAlbersUsaTerritories';
 import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
 import { useCache } from './useCache';
@@ -17,7 +18,9 @@ const Pleth = ({ layers, dataProviders, activeId }) => {
   );
 
   // TODO make this dynamic per region.
-  const projection = geoAlbersUsa();
+  const projection = geoAlbersUsaTerritories()
+    .scale(1300)
+    .translate([487.5, 305]);
 
   const path = geoPath(projection);
 

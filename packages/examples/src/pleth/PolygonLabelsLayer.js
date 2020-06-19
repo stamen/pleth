@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import polylabel from '../polylabel';
+import polylabel from '@datavis-tech/polylabel';
 import { maxIndex } from 'd3-array';
 
 const centroidWeight = 0.01;
