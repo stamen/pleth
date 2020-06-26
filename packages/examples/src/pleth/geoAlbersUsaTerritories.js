@@ -82,15 +82,15 @@ export function geoAlbersUsaTerritories() {
       t = lower48.translate(),
       x = (coordinates[0] - t[0]) / k,
       y = (coordinates[1] - t[1]) / k;
-    return (y >= 0.12 && y < 0.234 && x >= -0.425 && x < -0.214
+    return (y >= 0.12 && y < 0.234 && x >= -0.225 && x < -0.185
       ? alaska
-      : y >= 0.166 && y < 0.234 && x >= -0.214 && x < -0.115
+      : y >= 0.166 && y < 0.234 && x >= -0.185 && x < -0.08
       ? hawaii
       : y >= 0.204 && y < 0.234 && x >= 0.3 && x < 0.38
       ? puertoRico
-      : y >= 0.05 && y < 0.204 && x >= 0.34 && x < 0.38
+      : y >= 0.05 && y < 0.204 && x >= -0.415 && x < -0.225
       ? guamMariana
-      : y >= 0.16 && y < 0.204 && x >= 0.28 && x < 0.34
+      : y >= 0.18 && y < 0.234 && x >= -0.415 && x < -0.225
       ? americanSamoa
       : lower48
     ).invert(coordinates);
@@ -146,18 +146,18 @@ export function geoAlbersUsaTerritories() {
       .stream(pointStream);
 
     alaskaPoint = alaska
-      .translate([x - 0.31 * k, y + 0.201 * k])
+      .translate([x - 0.275 * k, y + 0.201 * k])
       .clipExtent([
         [x - 0.425 * k + epsilon, y + 0.12 * k + epsilon],
-        [x - 0.214 * k - epsilon, y + 0.234 * k - epsilon],
+        [x - 0.185 * k - epsilon, y + 0.234 * k - epsilon],
       ])
       .stream(pointStream);
 
     hawaiiPoint = hawaii
-      .translate([x - 0.205 * k, y + 0.212 * k])
+      .translate([x - 0.18 * k, y + 0.212 * k])
       .clipExtent([
-        [x - 0.214 * k + epsilon, y + 0.166 * k + epsilon],
-        [x - 0.115 * k - epsilon, y + 0.234 * k - epsilon],
+        [x - 0.185 * k + epsilon, y + 0.166 * k + epsilon],
+        [x - 0.08 * k - epsilon, y + 0.234 * k - epsilon],
       ])
       .stream(pointStream);
 
@@ -170,21 +170,20 @@ export function geoAlbersUsaTerritories() {
       .stream(pointStream);
 
     guamMarianaPoint = guamMariana
-      .translate([x + 0.36 * k, y + 0.14 * k])
+      .translate([x - 0.415 * k, y + 0.14 * k])
       .clipExtent([
-        [x + 0.34 * k, y + 0.05 * k],
-        [x + 0.38 * k, y + 0.204 * k],
+        [x - 0.45 * k, y + 0.05 * k],
+        [x - 0.39 * k, y + 0.21 * k],
       ])
       .stream(pointStream);
 
     americanSamoaPoint = americanSamoa
-      .translate([x + 0.315 * k, y + 0.18 * k])
+      .translate([x - 0.415 * k, y + 0.215 * k])
       .clipExtent([
-        [x + 0.28 * k, y + 0.16 * k],
-        [x + 0.34 * k, y + 0.204 * k],
+        [x - 0.45 * k, y + 0.21 * k],
+        [x - 0.39 * k, y + 0.234 * k],
       ])
       .stream(pointStream);
-
     return reset();
   };
 
