@@ -1,6 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import { geoPath } from 'd3-geo';
-import { geoAlbersUsaTerritories } from './geoAlbersUsaTerritories';
+import { geoAlbersUsaTerritories } from 'geo-albers-usa-territories';
 import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
 import { useCache } from './useCache';

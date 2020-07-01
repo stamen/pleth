@@ -4818,6 +4818,11 @@ gensync@^1.0.0-beta.1:
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
   integrity sha512-r8EC6NO1sngH/zdD9fiRDLdcgnbayXah+mLgManTaIZJqEC1MZstmnox8KpnI2/fxQwrp5OpCOYWLp4rBl4Jcg==
 
+geo-albers-usa-territories@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/geo-albers-usa-territories/-/geo-albers-usa-territories-0.0.1.tgz#c2b271d99b759704bada2b5903e3c98bc78e5870"
+  integrity sha512-HoUAyB/vp8bhVi2OtvJkxjapuXF9F5prVqOoCw9v3FayhWuv8ixmI/rEpvGyYUHkLZ8/23W9KKiSMkXmJ6sWvA==
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
