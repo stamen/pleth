@@ -2,6 +2,8 @@ import { writeFileSync } from 'fs';
 import fetch from 'node-fetch';
 import { csvFormat } from 'd3-dsv';
 
+// See https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html
+
 const getData = async ({ url, getFips }) => {
   const response = await fetch(url);
   const dataRaw = await response.json();
@@ -27,7 +29,6 @@ const writeData = ({ fileName, data }) => {
 
 const urlBase = 'https://api.census.gov/data/2019/pep/population';
 
-// See https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html
 const scrapeUS = async () => {
   const data = await getData({
     url: `${urlBase}?get=DATE_CODE,DATE_DESC,DENSITY,POP,NAME&for=us:*`,
@@ -45,10 +46,18 @@ const scrapeStates = async () => {
   return Array.from(new Set(data.map((d) => d.fips))).sort();
 };
 
+const scrapeCounties = async (stateFips) => {
+  const data = await getData({
+    url: `${urlBase}?get=COUNTY,DATE_CODE,DATE_DESC,DENSITY,POP&in=state:${stateFips}&for=county:*`,
+    getFips: (d) => d.state,
+  });
+  writeData({ fileName: `data/counties_${stateFips}.csv`, data });
+};
+
 const scrape = async () => {
   await scrapeUS();
   const states = await scrapeStates();
-  console.log(states);
+  states.forEach(scrapeCounties);
 };
 
 scrape();
