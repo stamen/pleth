@@ -1,0 +1,19 @@
+{
+  "name": "uscensusdata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scrape.js",
+  "scripts": {
+    "scrape": "node -r esm scrape.js",
+    "prettier": "prettier --single-quote --write './**/*.js'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "d3-dsv": "^2.0.0",
+    "esm": "^3.2.25",
+    "node-fetch": "^2.6.1",
+    "prettier": "^2.1.1"
+  }
+}
