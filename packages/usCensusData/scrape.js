@@ -21,26 +21,27 @@ const getData = async ({ url, getFips }) => {
   });
 };
 
+const writeData = ({ fileName, data }) => {
+  writeFileSync(fileName, csvFormat(data));
+};
+
+const urlBase = 'https://api.census.gov/data/2019/pep/population';
+
 // See https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html
 const scrapeUS = async () => {
   const data = await getData({
-    url:
-      'https://api.census.gov/data/2019/pep/population?get=COUNTY,DATE_CODE,DATE_DESC,DENSITY,POP,NAME,STATE&for=us:*',
+    url: `${urlBase}?get=DATE_CODE,DATE_DESC,DENSITY,POP,NAME&for=us:*`,
     getFips: (d) => d.us,
   });
-  const csv = csvFormat(data);
-  writeFileSync('data/us.csv', csv);
+  writeData({ fileName: 'data/us.csv', data });
 };
 
 const scrapeStates = async () => {
   const data = await getData({
-    url:
-      'https://api.census.gov/data/2019/pep/population?get=COUNTY,DATE_CODE,DATE_DESC,DENSITY,POP,NAME,STATE&for=state:*',
+    url: `${urlBase}?get=COUNTY,DATE_CODE,DATE_DESC,DENSITY,POP,NAME,STATE&for=state:*`,
     getFips: (d) => d.state,
   });
-
-  const csv = csvFormat(data);
-  writeFileSync('data/states.csv', csv);
+  writeData({ fileName: 'data/states.csv', data });
   return Array.from(new Set(data.map((d) => d.fips))).sort();
 };
 
