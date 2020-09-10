@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
 import { feature } from 'topojson';
+import { scaleSequentialLog } from 'd3-scale';
+import { max } from 'd3-array';
 import { gray } from 'd3-color';
+import { interpolateGreys } from 'd3-scale-chromatic';
 import Pleth, { PolygonsLayer, PolygonLabelsLayer } from './pleth';
 import { useCensusData, parseDate } from './useCensusData';
 import './App.css';
@@ -27,10 +30,11 @@ const USStatesGeometryProvider = {
 
 const geometryProviders = [USStatesGeometryProvider];
 
-const App = () => {
-  const activeId = 'USA';
-  const activeDate = parseDate('7/1/2019');
+const activeId = 'USA';
+const activeDate = parseDate('7/1/2019');
+const colorValue = (d) => d.density;
 
+const App = () => {
   const censusData = useCensusData(activeId);
 
   const activeDateData = useMemo(
@@ -38,28 +42,42 @@ const App = () => {
       censusData
         ? censusData.filter((d) => d.date.getTime() === activeDate.getTime())
         : null,
-    [censusData, activeDate]
+    [censusData]
   );
 
-  const fipsToDensity = useMemo(
+  const colorScale = useMemo(
+    () =>
+      activeDateData
+        ? scaleSequentialLog(
+            [1, max(activeDateData, colorValue)],
+            interpolateGreys
+          )
+        : null,
+    [activeDateData]
+  );
+
+  const fipsToColorValue = useMemo(
     () =>
       activeDateData
         ? activeDateData.reduce((accumulator, d) => {
-            accumulator[d.fips] = d.density;
+            accumulator[d.fips] = colorValue(d);
             return accumulator;
           }, {})
         : null,
     [activeDateData]
   );
-  console.log(fipsToDensity);
 
-  const layers = [
-    PolygonsLayer({
-      fillStyle: (feature) => gray(feature.id),
-      strokeStyle: gray(80),
-    }),
-    PolygonLabelsLayer,
-  ];
+  const layers = useMemo(
+    () => [
+      PolygonsLayer({
+        fillStyle: (feature) =>
+          fipsToColorValue ? colorScale(fipsToColorValue[feature.id]) : 'white',
+        strokeStyle: gray(80),
+      }),
+      PolygonLabelsLayer,
+    ],
+    [colorScale, fipsToColorValue]
+  );
 
   return (
     <div className="App">
