@@ -1,4 +1,5 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect, useMemo } from 'react';
+import { geoPath } from 'd3-geo';
 
 // For HiDPI Canvas rendering.
 // Makes it look still crisp even after browser zoom in.
@@ -9,10 +10,13 @@ export const PolygonsLayer = ({
   strokeStyle,
   scaleFactor = defaultScaleFactor,
 }) => {
-  const Component = ({ width, height, geometries, projection, path }) => {
+  const Component = ({ width, height, geometries, projection }) => {
     const ref = useRef();
     width *= scaleFactor;
     height *= scaleFactor;
+
+    // Set up the D3 path instance with the current projection.
+    const path = useMemo(() => geoPath(projection), [projection]);
 
     useLayoutEffect(() => {
       if (!geometries) return;

@@ -1,5 +1,4 @@
 import React, { useRef, useCallback } from 'react';
-import { geoPath } from 'd3-geo';
 import { geoAlbersUsaTerritories } from 'geo-albers-usa-territories';
 import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
@@ -24,9 +23,6 @@ const Pleth = ({ layers, geometryProviders, activeId }) => {
     .scale(1300)
     .translate([487.5, 305]);
 
-  // Set up the D3 path instance with the current projection.
-  const path = geoPath(projection);
-
   // Get the geometries based on the active geo ID.
   const geometries = get({
     cacheKey: 'geometries' + activeId,
@@ -50,7 +46,6 @@ const Pleth = ({ layers, geometryProviders, activeId }) => {
           layers={layers}
           geometries={geometries}
           projection={projection}
-          path={path}
         />
       ) : null}
     </Wrapper>
