@@ -30,16 +30,18 @@ export const PolygonsLayer = ({
       // Draw the shapes.
       const context = ref.current.getContext('2d');
       path.context(context);
-      context.beginPath();
-      path(geometries);
-      if (fillStyle) {
-        context.fillStyle = fillStyle;
-        context.fill();
-      }
-      if (strokeStyle) {
-        context.strokeStyle = strokeStyle;
-        context.stroke();
-      }
+      geometries.features.forEach((feature) => {
+        context.beginPath();
+        path(feature);
+        if (fillStyle) {
+          context.fillStyle = `rgba(0,0,0,${Math.random()}`;
+          context.fill();
+        }
+        if (strokeStyle) {
+          context.strokeStyle = strokeStyle;
+          context.stroke();
+        }
+      });
       path.context(null);
 
       // Restore the old scale and translate.

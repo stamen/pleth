@@ -28,6 +28,7 @@ const layers = [
   PolygonsLayer({ fillStyle: gray(95), strokeStyle: gray(80) }),
   PolygonLabelsLayer,
 ];
+
 const dataProviders = [USStatesDataProvider];
 
 const App = () => {
