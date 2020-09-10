@@ -19,22 +19,29 @@ const topoFeature = async (promise) => {
   return feature(data, data.objects.states);
 };
 
-const USStatesDataProvider = {
+const USStatesGeometryProvider = {
   isSupportedId: (id) => id === 'USA',
   fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
 };
 
 const layers = [
-  PolygonsLayer({ fillStyle: gray(95), strokeStyle: gray(80) }),
+  PolygonsLayer({
+    fillStyle: (feature) => gray(feature.id),
+    strokeStyle: gray(80),
+  }),
   PolygonLabelsLayer,
 ];
 
-const dataProviders = [USStatesDataProvider];
+const geometryProviders = [USStatesGeometryProvider];
 
 const App = () => {
   return (
     <div className="App">
-      <Pleth layers={layers} dataProviders={dataProviders} activeId="USA" />
+      <Pleth
+        layers={layers}
+        geometryProviders={geometryProviders}
+        activeId="USA"
+      />
     </div>
   );
 };

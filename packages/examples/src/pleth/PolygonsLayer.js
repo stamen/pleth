@@ -34,7 +34,7 @@ export const PolygonsLayer = ({
         context.beginPath();
         path(feature);
         if (fillStyle) {
-          context.fillStyle = `rgba(0,0,0,${Math.random()}`;
+          context.fillStyle = fillStyle(feature);
           context.fill();
         }
         if (strokeStyle) {

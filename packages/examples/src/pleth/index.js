@@ -6,15 +6,17 @@ import { useResizeObserver } from './useResizeObserver';
 import { useCache } from './useCache';
 import { PlethBody } from './PlethBody';
 
-const Pleth = ({ layers, dataProviders, activeId }) => {
+const Pleth = ({ layers, geometryProviders, activeId }) => {
   const ref = useRef();
   const dimensions = useResizeObserver(ref);
   const { get } = useCache();
 
-  const findDataProvider = useCallback(
+  const findGeometryProvider = useCallback(
     (id) =>
-      dataProviders.find((dataProvider) => dataProvider.isSupportedId(id)),
-    [dataProviders]
+      geometryProviders.find((geometryProvider) =>
+        geometryProvider.isSupportedId(id)
+      ),
+    [geometryProviders]
   );
 
   // TODO make this dynamic per region.
@@ -22,18 +24,20 @@ const Pleth = ({ layers, dataProviders, activeId }) => {
     .scale(1300)
     .translate([487.5, 305]);
 
+  // Set up the D3 path instance with the current projection.
   const path = geoPath(projection);
 
+  // Get the geometries based on the active geo ID.
   const geometries = get({
     cacheKey: 'geometries' + activeId,
     onCacheMiss: () => {
-      const dataProvider = findDataProvider(activeId);
-      if (!dataProvider) {
+      const geometryProvider = findGeometryProvider(activeId);
+      if (!geometryProvider) {
         throw new Error(
           'No data provider found that can support id "' + activeId + '".'
         );
       }
-      return dataProvider.fetchGeometriesForID(activeId);
+      return geometryProvider.fetchGeometriesForID(activeId);
     },
   });
 

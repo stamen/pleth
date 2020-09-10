@@ -26,7 +26,6 @@ export const PolygonLabelsLayer = ({
   height,
   geometries,
   projection,
-  path,
 }) => {
   // Wait for geometries to load.
   if (!geometries) return null;

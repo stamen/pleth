@@ -11,10 +11,13 @@ export const PlethBody = ({
 }) => {
   const layerNamesSeen = {};
   return layers.map((Layer) => {
+    // name is used as a React key, so we defensively check that it's there.
     if (!Layer.name) {
       // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
       throw new Error('Each layer entry must have a name field.');
     }
+
+    // Defensive guard for duplicates.
     if (layerNamesSeen[Layer.name]) {
       throw new Error(
         'The name field must be unique for layers. Multiple layers found with the same name "' +
@@ -23,6 +26,8 @@ export const PlethBody = ({
       );
     }
     layerNamesSeen[Layer.name] = true;
+
+    // Defensive sanity check.
     if (typeof Layer !== 'function') {
       throw new Error('Each layer entry must be a function.');
     }
