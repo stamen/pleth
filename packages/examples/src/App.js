@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { feature } from 'topojson';
+import { scaleSequentialLog } from 'd3-scale';
+import { max } from 'd3-array';
 import { gray } from 'd3-color';
+import { interpolateGreys } from 'd3-scale-chromatic';
 import Pleth, { PolygonsLayer, PolygonLabelsLayer } from './pleth';
+import { useCensusData, parseDate } from './useCensusData';
 import './App.css';
 
 import { json } from 'd3-fetch';
@@ -19,21 +23,69 @@ const topoFeature = async (promise) => {
   return feature(data, data.objects.states);
 };
 
-const USStatesDataProvider = {
+const USStatesGeometryProvider = {
   isSupportedId: (id) => id === 'USA',
   fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
 };
 
-const layers = [
-  PolygonsLayer({ fillStyle: gray(95), strokeStyle: gray(80) }),
-  PolygonLabelsLayer,
-];
-const dataProviders = [USStatesDataProvider];
+const geometryProviders = [USStatesGeometryProvider];
+
+const activeId = 'USA';
+const activeDate = parseDate('7/1/2019');
+const colorValue = (d) => d.density;
 
 const App = () => {
+  const censusData = useCensusData(activeId);
+
+  const activeDateData = useMemo(
+    () =>
+      censusData
+        ? censusData.filter((d) => d.date.getTime() === activeDate.getTime())
+        : null,
+    [censusData]
+  );
+
+  const colorScale = useMemo(
+    () =>
+      activeDateData
+        ? scaleSequentialLog(
+            [1, max(activeDateData, colorValue)],
+            interpolateGreys
+          )
+        : null,
+    [activeDateData]
+  );
+
+  const fipsToColorValue = useMemo(
+    () =>
+      activeDateData
+        ? activeDateData.reduce((accumulator, d) => {
+            accumulator[d.fips] = colorValue(d);
+            return accumulator;
+          }, {})
+        : null,
+    [activeDateData]
+  );
+
+  const layers = useMemo(
+    () => [
+      PolygonsLayer({
+        fillStyle: (feature) =>
+          fipsToColorValue ? colorScale(fipsToColorValue[feature.id]) : 'white',
+        strokeStyle: gray(80),
+      }),
+      PolygonLabelsLayer,
+    ],
+    [colorScale, fipsToColorValue]
+  );
+
   return (
     <div className="App">
-      <Pleth layers={layers} dataProviders={dataProviders} activeId="USA" />
+      <Pleth
+        layers={layers}
+        geometryProviders={geometryProviders}
+        activeId={activeId}
+      />
     </div>
   );
 };

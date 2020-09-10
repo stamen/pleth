@@ -1,4 +1,5 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect, useMemo } from 'react';
+import { geoPath } from 'd3-geo';
 
 // For HiDPI Canvas rendering.
 // Makes it look still crisp even after browser zoom in.
@@ -9,10 +10,13 @@ export const PolygonsLayer = ({
   strokeStyle,
   scaleFactor = defaultScaleFactor,
 }) => {
-  const Component = ({ width, height, geometries, projection, path }) => {
+  const Component = ({ width, height, geometries, projection }) => {
     const ref = useRef();
     width *= scaleFactor;
     height *= scaleFactor;
+
+    // Set up the D3 path instance with the current projection.
+    const path = useMemo(() => geoPath(projection), [projection]);
 
     useLayoutEffect(() => {
       if (!geometries) return;
@@ -30,16 +34,18 @@ export const PolygonsLayer = ({
       // Draw the shapes.
       const context = ref.current.getContext('2d');
       path.context(context);
-      context.beginPath();
-      path(geometries);
-      if (fillStyle) {
-        context.fillStyle = fillStyle;
-        context.fill();
-      }
-      if (strokeStyle) {
-        context.strokeStyle = strokeStyle;
-        context.stroke();
-      }
+      geometries.features.forEach((feature) => {
+        context.beginPath();
+        path(feature);
+        if (fillStyle) {
+          context.fillStyle = fillStyle(feature);
+          context.fill();
+        }
+        if (strokeStyle) {
+          context.strokeStyle = strokeStyle;
+          context.stroke();
+        }
+      });
       path.context(null);
 
       // Restore the old scale and translate.
