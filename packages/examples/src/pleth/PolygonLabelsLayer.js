@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import polylabel from '@datavis-tech/polylabel';
 import { maxIndex } from 'd3-array';
@@ -26,7 +26,15 @@ export const PolygonLabelsLayer = ({
   height,
   geometries,
   projection,
+  urlDispatch,
 }) => {
+  const drillDown = useCallback(
+    (event) => {
+      urlDispatch({ type: 'setActiveId', activeId: event.target.dataset.id });
+    },
+    [urlDispatch]
+  );
+
   // Wait for geometries to load.
   if (!geometries) return null;
 
@@ -61,7 +69,10 @@ export const PolygonLabelsLayer = ({
       {labels.map(({ id, name, coordinates }) => (
         <g key={id} transform={`translate(${coordinates})`}>
           <TextStroke> {name} </TextStroke>
-          <Text onClick={() => console.log('here')}> {name} </Text>
+          <Text data-id={id} onClick={drillDown}>
+            {' '}
+            {name}{' '}
+          </Text>
         </g>
       ))}
     </svg>

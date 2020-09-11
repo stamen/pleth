@@ -52,9 +52,8 @@ const urlStateReducer = (state, action) => {
 };
 
 const App = () => {
-  const [urlState] = useURLState(urlStateConfig, urlStateReducer);
+  const [urlState, urlDispatch] = useURLState(urlStateConfig, urlStateReducer);
   const { activeId } = urlState;
-  console.log(activeId);
 
   const censusData = useCensusData(activeId);
 
@@ -106,6 +105,7 @@ const App = () => {
         layers={layers}
         geometryProviders={geometryProviders}
         activeId={activeId}
+        urlDispatch={urlDispatch}
       />
     </div>
   );

@@ -5,7 +5,7 @@ import { useResizeObserver } from './useResizeObserver';
 import { useCache } from './useCache';
 import { PlethBody } from './PlethBody';
 
-const Pleth = ({ layers, geometryProviders, activeId }) => {
+const Pleth = ({ layers, geometryProviders, activeId, urlDispatch }) => {
   const ref = useRef();
   const dimensions = useResizeObserver(ref);
   const { get } = useCache();
@@ -46,6 +46,7 @@ const Pleth = ({ layers, geometryProviders, activeId }) => {
           layers={layers}
           geometries={geometries}
           projection={projection}
+          urlDispatch={urlDispatch}
         />
       ) : null}
     </Wrapper>

@@ -10,6 +10,7 @@ export const useURLState = (urlStateConfig, reducer) => {
   );
 
   // TODO build this out on react-router-dom and query-string.
+  // TODO make this a Context.
   // Handle the case of a single action that sets multiple params (trickiest case, comes up in practice)
   const [urlState, urlDispatch] = useReducer(reducer, initialState);
 

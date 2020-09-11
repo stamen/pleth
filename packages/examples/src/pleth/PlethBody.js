@@ -7,6 +7,7 @@ export const PlethBody = ({
   layers,
   geometries,
   projection,
+  urlDispatch,
 }) => {
   return layers.map((Layer) => {
     // Adjust projection to the current width and height.
@@ -20,6 +21,7 @@ export const PlethBody = ({
           height={height}
           geometries={geometries}
           projection={projection}
+          urlDispatch={urlDispatch}
         />
       </LayerWrapper>
     );
