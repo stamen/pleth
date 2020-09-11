@@ -5,6 +5,7 @@ import { max } from 'd3-array';
 import { gray } from 'd3-color';
 import { interpolateGreys } from 'd3-scale-chromatic';
 import Pleth, { PolygonsLayer, PolygonLabelsLayer, useURLState } from './pleth';
+import { plethIdFIPS } from './pleth/plethIdFIPS';
 import { useCensusData, parseDate } from './useCensusData';
 import './App.css';
 
@@ -20,6 +21,12 @@ const geometryURLFromId = (id) => {
 
 const topoFeature = async (promise) => {
   const data = await promise;
+  console.log(data.objects.states);
+
+  // Generate a "Pleth ID" with FIPS prefix.
+  data.objects.states.geometries.forEach((geometry) => {
+    geometry.id = plethIdFIPS(geometry.id);
+  });
   return feature(data, data.objects.states);
 };
 
@@ -28,7 +35,17 @@ const USStatesGeometryProvider = {
   fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
 };
 
-const geometryProviders = [USStatesGeometryProvider];
+const USCountiesGeometryProvider = {
+  isSupportedId: (id) => {
+    console.log(id);
+  },
+  fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
+};
+
+const geometryProviders = [
+  USStatesGeometryProvider,
+  USCountiesGeometryProvider,
+];
 
 const activeDate = parseDate('7/1/2019');
 const colorValue = (d) => d.density;
@@ -76,11 +93,11 @@ const App = () => {
     [activeDateData]
   );
 
-  const fipsToColorValue = useMemo(
+  const idToColorValue = useMemo(
     () =>
       activeDateData
         ? activeDateData.reduce((accumulator, d) => {
-            accumulator[d.fips] = colorValue(d);
+            accumulator[d.id] = colorValue(d);
             return accumulator;
           }, {})
         : null,
@@ -91,12 +108,12 @@ const App = () => {
     () => [
       PolygonsLayer({
         fillStyle: (feature) =>
-          fipsToColorValue ? colorScale(fipsToColorValue[feature.id]) : 'white',
+          idToColorValue ? colorScale(idToColorValue[feature.id]) : 'white',
         strokeStyle: gray(80),
       }),
       PolygonLabelsLayer,
     ],
-    [colorScale, fipsToColorValue]
+    [colorScale, idToColorValue]
   );
 
   return (
