@@ -5,4 +5,4 @@ Choropleths and beyond!
 
 ## For Developers
 
-`lerna bootstrap --hoist` is required. Without the `--hoist`, multiple versions of React wreak havoc.
+`lerna bootstrap --hoist` is required. Without the `--hoist`, multiple copies of React wreak havoc.
