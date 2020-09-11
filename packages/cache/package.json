@@ -1,0 +1,32 @@
+{
+  "name": "@stamen/pleth-cache",
+  "version": "1.0.0",
+  "description": "A utility for caching data.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "react-scripts test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/stamen/pleth.git"
+  },
+  "keywords": [
+    "cache"
+  ],
+  "author": "Curran Kelleher",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stamen/pleth/issues"
+  },
+  "homepage": "https://github.com/stamen/pleth#readme",
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
+  },
+  "devDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3"
+  }
+}
