@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { useCache } from './useCache';
+import { useCache } from './index';
 
 test('Stores data in the cache.', async () => {
   let data;

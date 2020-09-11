@@ -1,9 +1,9 @@
 import React, { useRef, useCallback } from 'react';
+import { useCache } from '@stamen/pleth-cache';
 import { geoAlbersUsaTerritories } from 'geo-albers-usa-territories';
 import { geoAlbersUsa } from 'd3-geo';
 import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
-import { useCache } from './useCache';
 import { PlethBody } from './PlethBody';
 
 const Pleth = ({ layers, geometryProviders, activeId, urlDispatch }) => {

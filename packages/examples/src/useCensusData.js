@@ -1,4 +1,4 @@
-import { useCache } from './pleth/useCache';
+import { useCache } from '@stamen/pleth-cache';
 import { plethIdFIPS } from './pleth/plethIdFIPS';
 import { csv } from 'd3-fetch';
 import { timeParse } from 'd3-time-format';
