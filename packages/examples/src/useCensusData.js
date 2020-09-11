@@ -1,13 +1,8 @@
-import React from 'react';
 import { useCache } from '@stamen/pleth-cache';
 import { plethIdFIPS } from './pleth/plethIdFIPS';
 import { csv } from 'd3-fetch';
 import { timeParse } from 'd3-time-format';
-import { myReact } from '@stamen/pleth-cache';
 export const parseDate = timeParse('%m/%d/%Y');
-
-
-console.log(myReact === React);
 
 const fips = (plethId) => plethId.substr(5);
 

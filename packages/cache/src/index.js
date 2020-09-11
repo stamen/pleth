@@ -1,6 +1,4 @@
-import React ,{ useCallback, useReducer } from 'react';
-
-export const myReact = React;
+import { useCallback, useReducer } from 'react';
 
 // Inspired by:
 //  * https://reactjs.org/docs/hooks-reference.html#usereducer
