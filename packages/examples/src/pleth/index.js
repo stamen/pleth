@@ -1,5 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import { geoAlbersUsaTerritories } from 'geo-albers-usa-territories';
+import { geoAlbersUsa } from 'd3-geo';
 import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
 import { useCache } from './useCache';
@@ -18,8 +19,11 @@ const Pleth = ({ layers, geometryProviders, activeId, urlDispatch }) => {
     [geometryProviders]
   );
 
-  // TODO make this dynamic per region.
-  const projection = geoAlbersUsaTerritories()
+  // TODO clean this up, make it configurable.
+  const projection = (activeId === 'USA'
+    ? geoAlbersUsaTerritories()
+    : geoAlbersUsa()
+  )
     .scale(1300)
     .translate([487.5, 305]);
 

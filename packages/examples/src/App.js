@@ -70,7 +70,6 @@ const colorValue = (d) => d.density;
 
 const urlStateConfig = {
   activeId: {
-    name: 'id',
     defaultValue: 'USA',
     parse: (d) => d,
     stringify: (d) => d,
