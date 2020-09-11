@@ -11,35 +11,53 @@ import './App.css';
 
 import { json } from 'd3-fetch';
 
+// TODO move this to a unified place.
+const isFIPS = (id) => id.startsWith('FIPS_');
+const isUSStateFIPS = (id) => isFIPS(id) && id.length === 7;
+
+const isFIPSParent = (parentId) => (childId) =>
+  isFIPS(parentId) &&
+  isFIPS(childId) &&
+  parentId.substr(5, 2) === childId.substr(5, 2);
+
 // This fetches the children geometries for the given ID.
 const geometryURLFromId = (id) => {
   if (id === 'USA') {
     return 'https://unpkg.com/us-atlas@3.0.0/states-10m.json';
+  } else if (isUSStateFIPS(id)) {
+    return 'https://unpkg.com/us-atlas@3.0.0/counties-10m.json';
   }
   throw new Error('Unknown ID provided: ' + id);
 };
 
-const topoFeature = async (promise) => {
+const topoFeature = async (promise, property, filter) => {
   const data = await promise;
-  console.log(data.objects.states);
+  const objects = data.objects[property];
 
   // Generate a "Pleth ID" with FIPS prefix.
-  data.objects.states.geometries.forEach((geometry) => {
+  objects.geometries.forEach((geometry) => {
     geometry.id = plethIdFIPS(geometry.id);
   });
-  return feature(data, data.objects.states);
+
+  if (filter) {
+    objects.geometries = objects.geometries.filter((geometry) =>
+      filter(geometry.id)
+    );
+  }
+
+  return feature(data, objects);
 };
 
 const USStatesGeometryProvider = {
   isSupportedId: (id) => id === 'USA',
-  fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
+  fetchGeometriesForID: (id) =>
+    topoFeature(json(geometryURLFromId(id)), 'states'),
 };
 
 const USCountiesGeometryProvider = {
-  isSupportedId: (id) => {
-    console.log(id);
-  },
-  fetchGeometriesForID: (id) => topoFeature(json(geometryURLFromId(id))),
+  isSupportedId: isUSStateFIPS,
+  fetchGeometriesForID: (id) =>
+    topoFeature(json(geometryURLFromId(id)), 'counties', isFIPSParent(id)),
 };
 
 const geometryProviders = [
