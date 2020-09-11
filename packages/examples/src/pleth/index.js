@@ -1,11 +1,12 @@
 import React, { useRef, useCallback } from 'react';
 import { geoAlbersUsaTerritories } from 'geo-albers-usa-territories';
+import { geoAlbersUsa } from 'd3-geo';
 import { Wrapper } from './styles';
 import { useResizeObserver } from './useResizeObserver';
 import { useCache } from './useCache';
 import { PlethBody } from './PlethBody';
 
-const Pleth = ({ layers, geometryProviders, activeId }) => {
+const Pleth = ({ layers, geometryProviders, activeId, urlDispatch }) => {
   const ref = useRef();
   const dimensions = useResizeObserver(ref);
   const { get } = useCache();
@@ -18,8 +19,11 @@ const Pleth = ({ layers, geometryProviders, activeId }) => {
     [geometryProviders]
   );
 
-  // TODO make this dynamic per region.
-  const projection = geoAlbersUsaTerritories()
+  // TODO clean this up, make it configurable.
+  const projection = (activeId === 'USA'
+    ? geoAlbersUsaTerritories()
+    : geoAlbersUsa()
+  )
     .scale(1300)
     .translate([487.5, 305]);
 
@@ -46,6 +50,7 @@ const Pleth = ({ layers, geometryProviders, activeId }) => {
           layers={layers}
           geometries={geometries}
           projection={projection}
+          urlDispatch={urlDispatch}
         />
       ) : null}
     </Wrapper>
@@ -55,3 +60,4 @@ const Pleth = ({ layers, geometryProviders, activeId }) => {
 export default Pleth;
 export { PolygonsLayer } from './PolygonsLayer';
 export { PolygonLabelsLayer } from './PolygonLabelsLayer';
+export { useURLState } from './useURLState';
