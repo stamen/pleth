@@ -55,3 +55,4 @@ const Pleth = ({ layers, geometryProviders, activeId }) => {
 export default Pleth;
 export { PolygonsLayer } from './PolygonsLayer';
 export { PolygonLabelsLayer } from './PolygonLabelsLayer';
+export { useURLState } from './useURLState';

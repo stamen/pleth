@@ -4,7 +4,7 @@ import { scaleSequentialLog } from 'd3-scale';
 import { max } from 'd3-array';
 import { gray } from 'd3-color';
 import { interpolateGreys } from 'd3-scale-chromatic';
-import Pleth, { PolygonsLayer, PolygonLabelsLayer } from './pleth';
+import Pleth, { PolygonsLayer, PolygonLabelsLayer, useURLState } from './pleth';
 import { useCensusData, parseDate } from './useCensusData';
 import './App.css';
 
@@ -30,11 +30,32 @@ const USStatesGeometryProvider = {
 
 const geometryProviders = [USStatesGeometryProvider];
 
-const activeId = 'USA';
 const activeDate = parseDate('7/1/2019');
 const colorValue = (d) => d.density;
 
+const urlStateConfig = {
+  activeId: {
+    name: 'id',
+    defaultValue: 'USA',
+    parse: (d) => d,
+    stringify: (d) => d,
+  },
+};
+
+const urlStateReducer = (state, action) => {
+  switch (action.type) {
+    case 'setActiveId':
+      return { ...state, activeId: action.activeId };
+    default:
+      throw new Error();
+  }
+};
+
 const App = () => {
+  const [urlState] = useURLState(urlStateConfig, urlStateReducer);
+  const { activeId } = urlState;
+  console.log(activeId);
+
   const censusData = useCensusData(activeId);
 
   const activeDateData = useMemo(
