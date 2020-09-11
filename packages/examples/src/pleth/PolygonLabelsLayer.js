@@ -7,7 +7,7 @@ const centroidWeight = 0.01;
 const precision = 1;
 
 const Text = styled.text`
-  pointer-events: none;
+  cursor: pointer;
   user-select: none;
   font-size: 10px;
   text-anchor: middle;
@@ -58,14 +58,12 @@ export const PolygonLabelsLayer = ({
 
   return (
     <svg width={width} height={height}>
-      {labels.map(({ id, name, coordinates }) => {
-        return (
-          <g key={id} transform={`translate(${coordinates})`}>
-            <TextStroke> {name} </TextStroke>
-            <Text> {name} </Text>
-          </g>
-        );
-      })}
+      {labels.map(({ id, name, coordinates }) => (
+        <g key={id} transform={`translate(${coordinates})`}>
+          <TextStroke> {name} </TextStroke>
+          <Text onClick={() => console.log('here')}> {name} </Text>
+        </g>
+      ))}
     </svg>
   );
 };
