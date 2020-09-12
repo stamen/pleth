@@ -6,6 +6,9 @@
   "scripts": {
     "test": "react-scripts test"
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/stamen/pleth.git"
